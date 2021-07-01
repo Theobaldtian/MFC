@@ -1,0 +1,25 @@
+char* 转 char
+
+UNICODE字符集
+方法一：
+char *s = "Ab1";
+char buf[100];
+strcpy(buf, s);   //该函数不安全，（打开）项目->属性->C/C++->预处理器->预处理器定义（添加）_CRT_SECURE_NO_DEPRECATE和_CRT_NONSTDC_NO_DEPRECATE
+
+
+
+
+======================================================================================================================
+
+char 转 char*
+
+UNICODE字符集
+方法一：
+char buf[] = "Ab1";
+char *s = buf;
+
+方法二：
+char a = { 'A' };
+char* b;
+b = &a;
+
