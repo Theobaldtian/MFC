@@ -1,0 +1,74 @@
+CString 转 char*
+
+UNICODE字符集
+方法一：
+CString str = _T("Ab1");    //CString str = L"Ab1";
+int len = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
+char *buf = new char[len + 1];
+WideCharToMultiByte(CP_ACP, 0, str, -1, buf, len, NULL, NULL);
+
+delete[] buf;
+
+方法二：
+CString str = _T("Ab1");
+//声明标识
+USES_CONVERSION;
+char *buf = T2A(str);		//char *buf = W2A(cstr);
+
+方法三：
+
+
+多字节字符集
+方法一：
+CString str = _T("Ab1");
+char *buf = str.GetBuffer();
+
+方法二：
+CString str = _T("Ab1");
+char *buf = (LPSTR)(LPCSTR)str;
+
+方法三：
+
+
+
+==================================================================================================================================、
+
+char* 转 CString
+
+UNICODE字符集
+方法一：
+char *buf = "Ab1";
+CString str(buf);
+
+方法二：  该方法会在后方产生乱码
+char * pFileName = "Ab1";
+//计算char *数组大小，以字节为单位，一个汉字占两个字节
+int charLen = strlen(pFileName);
+//计算多字节字符的大小，按字符计算。
+int len = MultiByteToWideChar(CP_ACP,0,pFileName,charLen,NULL,0);
+//为宽字节字符数组申请空间，数组大小为按字节计算的多字节字符大小
+TCHAR *buf = new TCHAR[len + 1];
+//多字节编码转换成宽字节编码
+MultiByteToWideChar(CP_ACP,0,pFileName,charLen,buf,len);
+buf[len] = '/0'; //添加字符串结尾，注意不是len+1
+//将TCHAR数组转换为CString
+CString pWideChar;
+pWideChar.Append(buf);
+
+//删除缓冲区
+delete []buf;
+
+方法三：
+char * buf = "Ab1";
+USES_CONVERSION;
+CString str = A2T(buf);   //CString str = A2W(buf);
+
+
+多字节字符集
+方法一：
+char *buf = "Abc";
+CString str(buf);
+
+方法二：
+
+方法三：
